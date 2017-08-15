@@ -1,5 +1,5 @@
 from pinyin import PinYin
-from reallPossible import possibleList
+from realPossibleDict import possibleDict
 class LoopMachine:
     def __init__(self,numOfLoops,maximumValue):
         self.loopIndex = []
@@ -73,11 +73,8 @@ class rhyRobot:
             appendFlag = True
             for i in range(len(loopIndex)):
                 wordToAppend = self.shengMu[loopIndex[i]] + pinYinTuple[i][1]
-                appendFlag = False
-                for item in possibleList:
-                    if(item == wordToAppend):
-                        appendFlag = True
-                if(appendFlag == False):
+                if(possibleDict.has_key(wordToAppend) == False):
+                    appendFlag = False
                     break
                 newWord = newWord + wordToAppend + ' '
             if(appendFlag == True):

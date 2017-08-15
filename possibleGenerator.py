@@ -14,5 +14,15 @@ for line in allText:
             possibleList.append(item)
 print possibleList
 '''
+'''
 from reallPossible import possibleList
-print possibleList
+f = open("realPossibleDict.py","w")
+wordToAppend = "possibleDict = {"
+for item in possibleList:
+    wordToAppend = wordToAppend + "'"+item+"':1,"
+print wordToAppend
+f.write(wordToAppend)
+f.close()
+'''
+from realPossibleDict import possibleDict
+print possibleDict.has_key("bhu")
