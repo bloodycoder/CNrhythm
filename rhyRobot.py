@@ -1,4 +1,5 @@
 from pinyin import PinYin
+from reallPossible import possibleList
 class LoopMachine:
     def __init__(self,numOfLoops,maximumValue):
         self.loopIndex = []
@@ -42,7 +43,7 @@ class rhyRobot:
         self.pinYinRobot = PinYin()
         self.pinYinRobot.load_word()
         self.shengMu = ["b","p","m","f","d","t","n","l","g","k","h","j","q","x","zh","ch","sh","r","z","c","s","y","w"]
-        self.zhengTi = ["zhi","chi","shi","ri","zi","ci","si","wu","yu","ye","yue","yuan","yin","yun","ying"]
+        self.zhengTi = ["zhi","chi","shi","ri","zi","ci","si","yu","ye","yue","yuan","yin","yun","ying"]
         print("pinYinRobot is loaded")
     
     def findRhyForWords(self,chinese):
@@ -53,10 +54,13 @@ class rhyRobot:
                     print singleWord+" is whole,cant rhy"
                     return
         pinYinTuple = self.__findPinYinTuple(pinYinList)
-        print pinYinTuple
         allPossibleWord = self.__findAllPosiblePinYin(pinYinTuple)
-        
+        print allPossibleWord
+
     def __getResultFromBaidu(self,allPossibleWord):
+        pass
+
+    def __getResultFromLocal(self,allPossibleWord):
         pass
 
     def __findAllPosiblePinYin(self,pinYinTuple):
@@ -66,12 +70,19 @@ class rhyRobot:
         while(myLoopMachine.shouldStop()):
             loopIndex = myLoopMachine.getLoopIndex()
             newWord = ''
+            appendFlag = True
             for i in range(len(loopIndex)):
-                if(self.shengMu[loopIndex[i]] != pinYinTuple[i][0]):
-                    newWord = newWord + ' '+ self.shengMu[loopIndex[i]] + pinYinTuple[i][1]
-                    allPossibleWord.append((newWord,0))
+                wordToAppend = self.shengMu[loopIndex[i]] + pinYinTuple[i][1]
+                appendFlag = False
+                for item in possibleList:
+                    if(item == wordToAppend):
+                        appendFlag = True
+                if(appendFlag == False):
+                    break
+                newWord = newWord + wordToAppend + ' '
+            if(appendFlag == True):
+                allPossibleWord.append((newWord,0))
             myLoopMachine.incr()
-            print newWord
         return allPossibleWord
 
     def __findPinYinTuple(self,pinYinList):
@@ -83,7 +94,7 @@ class rhyRobot:
                 pinYinTuple.append((item[:1],item[1:]))
         return pinYinTuple
 m_rhyRobot = rhyRobot()
-m_rhyRobot.findRhyForWords("充公")
+m_rhyRobot.findRhyForWords("五线谱")
 ''' 
 #code to test LoopMachine
 lm = LoopMachine(2,23)
